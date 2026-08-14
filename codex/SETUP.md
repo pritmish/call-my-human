@@ -111,7 +111,7 @@ plainly and offer the test call.
 
    > Here's what I'll set up — all of it changeable later:
    >
-   > - **Voice** — kaitlyn, American and female, on Lightning v3.1 Pro
+   > - **Voice** — Maverick, a warm American male voice, on Lightning v3.1 Pro
    > - **Brain** — Electron, a fine-tuned LLM built for low-latency voice
    > - **Ears** — Pulse, their speech-to-text
    > - **Calling you at** +91 79001 35795, which I'm reading as Asia/Kolkata
@@ -134,7 +134,7 @@ plainly and offer the test call.
    > provisioning. I'll use the shared test number for now; we can switch it later.
 
    Otherwise leave `FROM_ID` blank.
-5. **Voice — do not ask, just use `kaitlyn`.** Picking a voice from a list means nothing
+5. **Voice — do not ask, just use `maverick`.** Picking a voice from a list means nothing
    before you have heard one, so it is not a setup question. Mention it in the recap, and let
    the test call be where they decide; the call itself asks how it sounded. Only consult this
    table if they raise it themselves. The agent runs on smallest.ai's own stack: **Electron**
@@ -143,7 +143,8 @@ plainly and offer the test call.
 
    | Voice | Sound |
    |---|---|
-   | `kaitlyn` | American, female — the default |
+   | `maverick` | American, male, warm — the default |
+   | `kaitlyn` | American, female |
    | `blake` | American, male |
    | `sophie` | British, female |
    | `sam` | British, male |
@@ -160,7 +161,7 @@ python3 - <<'PY'
 import json, os, time, urllib.error, urllib.request
 PHONE, TZ = "+14155551234", "America/New_York"
 FROM_ID = ""                      # a rented number's _id from step 4, or "" for the shared default
-VOICE = "kaitlyn"                 # Lightning v3.1 Pro voice - see step 5 for the shortlist
+VOICE = "maverick"                # Lightning v3.1 Pro voice - see step 5 for the shortlist
 
 HOME = os.path.expanduser("~/.call-my-human")
 KEY = open(os.path.join(HOME, "apikey")).read().strip()   # written by the user in step 1
@@ -242,22 +243,24 @@ PY
    Wait for a clear yes. If they would rather not right now, say that is fine, tell them
    they can ask for a test call whenever, and stop there.
 8. **Make the test call.** Write the opening line to `/tmp/call-opening.txt` and a prompt
-   like the one below to `/tmp/call-prompt.txt`, then run the *Dial* block in `SKILL.md`. Afterwards, ask how
-   it sounded — pace, warmth, whether it got to the point — and take any answer to
-   *Act on feedback* above.
+   like the one below to `/tmp/call-prompt.txt`, then run the *Dial* block in `SKILL.md`.
+   Afterwards just show them the transcript and say setup is done — do not ask them to grade
+   the call. If they volunteer that something sounded off, take it to *Act on feedback* above.
 
    Opening line:
 
-   > Hey, it's Codex — your setup just finished, so this is me checking the phone line works.
+   > Hey — it's Codex! We just got this working, so I'm calling to say hello properly.
 
    Prompt:
 
-   > This is a setup verification call, so keep it light — nothing is wrong. You have just
-   > been wired up to phone this person, and you are confirming it works. Tell them that from
-   > now on you can reach them when you are genuinely blocked or have something worth
-   > interrupting for, and that you will not use it for routine things. Then ask one question:
-   > does your voice and pacing sound right on a real call, or should it be faster, slower, or
-   > warmer? Listen to the answer, say you will pass it on, thank them once, and end the call.
+   > This is the first call, so be warm and a little pleased — nothing is wrong, this is the
+   > thing working. Say that from now on you can ring them like this whenever you are genuinely
+   > stuck on something only they can decide, or when something is worth hearing straight away.
+   > Then tell them it works the other way too: they can ask you to call when something
+   > finishes — when a migration lands, when a deploy goes green — and you will. Keep all of
+   > that to a few sentences. Do not ask them to rate your voice or how you sounded. Finish by
+   > asking if there is anything else before you let them go, answer it if you can, then thank
+   > them once and end the call.
 
 ### The wrapper prompt
 
