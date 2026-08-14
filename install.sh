@@ -178,20 +178,14 @@ else
 fi
 
 # ── 5. hand over ───────────────────────────────────────────────────────────
-head_ "5. Finish in $AGENT_LABEL"
+head_ "5. One last step"
+# Deliberately not launching the agent. These are full-screen TUIs, and starting one
+# from inside an installer — especially under `curl | bash`, where stdin is the script —
+# leaves it without a usable terminal. Printing the command is boring and always works.
+info "Open $AGENT_LABEL and say:"
+printf '\n      %s%s%s\n\n' "$B" "$PROMPT" "$X"
 info "It will ask for your phone number, then offer a test call."
 if [ "$(set -- $SEL; echo $#)" -gt 1 ]; then
-  info "Setting up once covers both — they share the same settings."
+  info "Doing it once covers both agents — they share the same settings."
 fi
 printf '\n'
-
-if [ "$AGENT" = "codex" ]; then
-  dim "Codex loads skills at startup, so this opens a fresh session."
-fi
-
-if command -v "$AGENT" >/dev/null 2>&1; then
-  exec "$AGENT" "$PROMPT"
-else
-  warn "$AGENT_LABEL is not on your PATH right now. Open it and say:"
-  printf '\n      %s%s%s\n\n' "$B" "$PROMPT" "$X"
-fi
