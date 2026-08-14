@@ -178,14 +178,30 @@ else
 fi
 
 # ── 5. hand over ───────────────────────────────────────────────────────────
-head_ "5. One last step"
-# Deliberately not launching the agent. These are full-screen TUIs, and starting one
-# from inside an installer — especially under `curl | bash`, where stdin is the script —
-# leaves it without a usable terminal. Printing the command is boring and always works.
-info "Open $AGENT_LABEL and say:"
-printf '\n      %s%s%s\n\n' "$B" "$PROMPT" "$X"
+head_ "5. Finish in $AGENT_LABEL"
 info "It will ask for your phone number, then offer a test call."
 if [ "$(set -- $SEL; echo $#)" -gt 1 ]; then
   info "Doing it once covers both agents — they share the same settings."
 fi
 printf '\n'
+
+show_command() {
+  [ -n "${1:-}" ] && warn "$1"
+  info "Open $AGENT_LABEL and say:"
+  printf '\n      %s%s%s\n\n' "$B" "$PROMPT" "$X"
+  exit 0
+}
+
+command -v "$AGENT" >/dev/null 2>&1 || show_command "$AGENT_LABEL is not on your PATH."
+
+# Both agents take an opening prompt as their first argument. They are full-screen TUIs,
+# so they need a real terminal: when stdin already is one, hand it over untouched — a
+# redirect here is what made Codex panic in its event reader.
+if [ -t 0 ]; then
+  exec "$AGENT" "$PROMPT"
+elif { true < /dev/tty; } 2>/dev/null; then
+  # `curl | bash`: stdin is the script, so borrow the controlling terminal.
+  exec "$AGENT" "$PROMPT" < /dev/tty
+else
+  show_command "No terminal to hand over to."
+fi

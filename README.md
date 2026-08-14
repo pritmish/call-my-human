@@ -12,7 +12,7 @@ Works with **Claude Code** and **OpenAI Codex**, on **macOS, Linux and Windows**
 curl -fsSL https://raw.githubusercontent.com/pritmish/call-my-human/main/install.sh | bash
 ```
 
-The installer looks for Claude Code and Codex on your machine. If you have one, it uses it. If you have both, it asks — either, or both — and installs the matching edition to each. Then it takes your smallest.ai API key (hidden, and verified before it saves) and tells you what to say to your agent to finish — it asks for your phone number, then offers a test call.
+The installer looks for Claude Code and Codex on your machine. If you have one, it uses it. If you have both, it asks — either, or both — and installs the matching edition to each. Then it takes your smallest.ai API key (hidden, and verified before it saves) and hands over to your agent to finish: it asks for your phone number, then offers a test call.
 
 Installing to both is worth doing — the settings live in one place, so setting up in one agent means the other works straight away.
 
