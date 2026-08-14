@@ -239,8 +239,12 @@ interruption for nothing.
 
 First run, or the user wants a different voice, number or wording? Everything for that —
 the setup walkthrough, the wrapper prompt published onto the agent, and the Atoms API
-reference — is in **`SETUP.md`, next to this file**. Read it when you need it; you do not
-need it to place a call.
+reference — is in **`SETUP.md`, next to this file**.
+
+**Open it only when one of those is actually happening.** Do not read it to get oriented,
+to check what the skill can do, or before placing a call — everything a call needs is
+already here. It sits in a separate file precisely so it stays out of context until the
+rare moment it matters.
 
 If `SETUP.md` is missing, the install was incomplete: re-run the installer from
 https://github.com/pritmish/call-my-human rather than improvising the API calls.
