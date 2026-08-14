@@ -237,14 +237,22 @@ interruption for nothing.
 
 ## Changing the setup
 
-First run, or the user wants a different voice, number or wording? Everything for that —
-the setup walkthrough, the wrapper prompt published onto the agent, and the Atoms API
-reference — is in **`SETUP.md`, next to this file**.
+`SETUP.md`, next to this file, holds the first-run walkthrough, the wrapper prompt that
+gets published onto the voice agent, and the Atoms API reference. One check tells you
+whether you need it:
 
-**Open it only when one of those is actually happening.** Do not read it to get oriented,
-to check what the skill can do, or before placing a call — everything a call needs is
-already here. It sits in a separate file precisely so it stays out of context until the
-rare moment it matters.
+```bash
+ls -A ~/.call-my-human/ 2>/dev/null
+```
+
+**Read `SETUP.md` when:**
+
+- `config.json` is missing — this is a first run, so setup has to happen. A message like "set up call-my-human" means exactly this; go straight there.
+- The user wants something changed that a call cannot change by itself: a different voice, a different number to ring, different wording in how you speak on the phone.
+
+**Skip it when both `apikey` and `config.json` are already there.** Setup is done, and
+everything placing a call needs is in this file. Reading `SETUP.md` then adds nothing and
+costs context on every call — which is the whole reason it is a separate file.
 
 If `SETUP.md` is missing, the install was incomplete: re-run the installer from
 https://github.com/pritmish/call-my-human rather than improvising the API calls.
