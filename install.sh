@@ -194,14 +194,25 @@ show_command() {
 
 command -v "$AGENT" >/dev/null 2>&1 || show_command "$AGENT_LABEL is not on your PATH."
 
+# Under `curl | bash` stdin is the script, so the agent has to borrow the terminal the
+# output is on. It must be borrowed by its real device name (/dev/ttys003), not through
+# the /dev/tty alias: on macOS, kqueue rejects the alias with EINVAL, and Claude Code
+# (Bun) crashes on its first stdin read.
+terminal() {
+  local fd
+  for fd in 2 1; do
+    [ -t "$fd" ] && tty <&"$fd" 2>/dev/null && return 0
+  done
+  { true < /dev/tty; } 2>/dev/null && echo /dev/tty
+}
+
 # Both agents take an opening prompt as their first argument. They are full-screen TUIs,
 # so they need a real terminal: when stdin already is one, hand it over untouched — a
 # redirect here is what made Codex panic in its event reader.
 if [ -t 0 ]; then
   exec "$AGENT" "$PROMPT"
-elif { true < /dev/tty; } 2>/dev/null; then
-  # `curl | bash`: stdin is the script, so borrow the controlling terminal.
-  exec "$AGENT" "$PROMPT" < /dev/tty
+elif TTY=$(terminal) && [ -n "$TTY" ]; then
+  exec "$AGENT" "$PROMPT" < "$TTY"
 else
   show_command "No terminal to hand over to."
 fi
